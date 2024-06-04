@@ -2,7 +2,7 @@ pipeline{
     agent any 
 
     stages{
-        stage("Clean up"){    // putting this here we gurantee our environment is clean
+        stage("Clean up"){    
             steps{
                 deleteDir() 
             }
@@ -10,7 +10,23 @@ pipeline{
 
         stage("Clone Repo"){
             steps{
-                sh 
+                sh "git clone https://github.com/jenkins-docs/simple-java-maven-app.git"
+            }
+        }
+        stage("Build"){
+            steps{
+                dir("simple-java-maven-app"){
+                    sh "mvn clean install"
+                }
+            }
+        }
+
+        stage("Test"){
+            steps{
+                dir("simple-java-maven-app"){
+                    sh "mvn test"
+                }
+                
             }
         }
     }
